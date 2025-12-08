@@ -249,17 +249,71 @@
         /* Mobile Responsive */
         @media (max-width: 900px) {
             .insight-container {
-                grid-template-columns: 1fr;
+                display: block;
+                /* Stack vertically */
                 padding-top: 60px;
             }
 
             .neural-nav {
+                display: flex;
+                /* Show as flex row */
+                position: sticky;
+                /* Keep accessible */
+                top: 70px;
+                /* Below main nav */
+                height: auto;
+                width: 100%;
+                border-right: none;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+                padding: 1rem;
+                overflow-x: auto;
+                /* Enable scrolling */
+                white-space: nowrap;
+                background: rgba(5, 5, 8, 0.95);
+                backdrop-filter: blur(10px);
+                z-index: 900;
+                gap: 1rem;
+                align-items: center;
+                /* Hide scrollbar for cleaner look */
+                scrollbar-width: none;
+                -ms-overflow-style: none;
+            }
+
+            .neural-nav::-webkit-scrollbar {
                 display: none;
+            }
+
+            .neural-title,
+            .cluster-label {
+                display: none;
+                /* Simplify interface */
+            }
+
+            .topic-cluster {
+                display: flex;
+                gap: 0.5rem;
+                margin: 0;
+            }
+
+            .topic-node {
+                margin: 0;
+                min-width: max-content;
+                background: rgba(255, 255, 255, 0.05);
+                padding: 0.5rem 1rem;
+                font-size: 0.85rem;
             }
 
             .content-stream {
                 margin-left: 0;
-                padding: 2rem;
+                padding: 2rem 1.5rem;
+            }
+
+            .article-card {
+                padding: 2rem 1.5rem;
+            }
+
+            .article-title {
+                font-size: 2rem;
             }
         }
     </style>
