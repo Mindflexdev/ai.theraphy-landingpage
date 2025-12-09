@@ -95,7 +95,7 @@ function initFloatingElements() {
 
 function createOrbs() {
     const container = document.getElementById('orbsContainer');
-    const orbCount = 8;
+    const orbCount = 5;
 
     for (let i = 0; i < orbCount; i++) {
         const orb = document.createElement('div');
@@ -120,7 +120,7 @@ function createOrbs() {
                 transparent 70%);
             animation-delay: ${delay}s;
             animation-duration: ${duration}s;
-            filter: blur(${size / 20}px);
+            /* filter: blur(${size / 20}px); - Removed for performance */
         `;
 
         container.appendChild(orb);
@@ -129,7 +129,7 @@ function createOrbs() {
 
 function createParticles() {
     const container = document.getElementById('particlesContainer');
-    const particleCount = 30;
+    const particleCount = 12;
 
     for (let i = 0; i < particleCount; i++) {
         const particle = document.createElement('div');
@@ -154,7 +154,7 @@ function createParticles() {
 
 function createFeathers() {
     const container = document.getElementById('feathersContainer');
-    const featherCount = 6;
+    const featherCount = 3;
 
     for (let i = 0; i < featherCount; i++) {
         const feather = document.createElement('div');
@@ -523,7 +523,9 @@ function initEngineControls() {
         // Clear existing
         orbitsLayer.innerHTML = '';
 
-        const radius = 160; // Distance from center
+        // Check for mobile to reduce radius
+        const isMobile = window.innerWidth < 900;
+        const radius = isMobile ? 110 : 160; // Distance from center
         const totalNodes = nodes.length;
 
         nodes.forEach((node, index) => {
@@ -693,23 +695,26 @@ function initSmoothScroll() {
 
 // ===== Parallax Effect on Scroll =====
 let ticking = false;
+// Parallax effect removed for performance
+/*
 window.addEventListener('scroll', () => {
     if (!ticking) {
         window.requestAnimationFrame(() => {
             const scrolled = window.pageYOffset;
 
-            // Parallax for orbs
-            const orbs = document.querySelectorAll('.orb');
-            orbs.forEach((orb, i) => {
-                const speed = 0.05 + (i * 0.02);
-                orb.style.transform = `translateY(${scrolled * speed}px)`;
-            });
+            // Parallax for orbs - Removed to prevent conflict with CSS animations
+            // const orbs = document.querySelectorAll('.orb');
+            // orbs.forEach((orb, i) => {
+            //     const speed = 0.05 + (i * 0.02);
+            //     orb.style.transform = `translateY(${scrolled * speed}px)`;
+            // });
 
             ticking = false;
         });
         ticking = true;
     }
 });
+*/
 
 // ===== Mobile Carousel Scroll Spy =====
 function initCarouselScroll() {

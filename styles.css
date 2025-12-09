@@ -147,12 +147,12 @@ body {
     0%,
     100% {
         transform: scale(1);
-        box-shadow: 0 0 20px var(--glow-purple);
+        opacity: 1;
     }
 
     50% {
         transform: scale(1.1);
-        box-shadow: 0 0 35px var(--glow-pink);
+        opacity: 0.8;
     }
 }
 
@@ -501,12 +501,10 @@ body {
     0%,
     100% {
         opacity: 0.4;
-        filter: blur(10px);
     }
 
     50% {
         opacity: 0.8;
-        filter: blur(15px);
     }
 }
 
@@ -1221,12 +1219,10 @@ body {
     0%,
     100% {
         opacity: 0.5;
-        text-shadow: 0 0 5px #9b59b6;
     }
 
     50% {
         opacity: 1;
-        text-shadow: 0 0 20px #9b59b6, 0 0 40px #9b59b6;
     }
 }
 
@@ -2014,13 +2010,7 @@ body {
 }
 
 /* ===== Floating Elements ===== */
-.orb {
-    position: absolute;
-    border-radius: 50%;
-    background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.3), transparent 70%);
-    filter: blur(1px);
-    animation: float 20s infinite ease-in-out;
-}
+/* .orb removed, consolidated below */
 
 @keyframes float {
 
@@ -2049,6 +2039,8 @@ body {
     background: rgba(255, 255, 255, 0.6);
     border-radius: 50%;
     animation: particle 15s infinite linear;
+    transform: translate3d(0, 0, 0);
+    /* Force Hardware Acceleration */
 }
 
 @keyframes particle {
@@ -2079,6 +2071,8 @@ body {
     border-radius: 50% 50% 50% 50% / 80% 80% 20% 20%;
     animation: featherFall 25s infinite linear;
     opacity: 0.3;
+    transform: translate3d(0, 0, 0);
+    /* Force Hardware Acceleration */
 }
 
 @keyframes featherFall {
@@ -2164,6 +2158,11 @@ body {
 @media (max-width: 768px) {
     .nav-links {
         display: none;
+    }
+
+    .hero {
+        padding-top: 9rem;
+        /* Increased space for header */
     }
 
     .hero-title {
@@ -2386,16 +2385,7 @@ body {
 }
 
 /* ===== Enhanced Background Orbs ===== */
-.orb {
-    position: absolute;
-    border-radius: 50%;
-    mix-blend-mode: screen;
-    filter: blur(30px);
-    opacity: 0.6;
-    animation: orbFloat linear infinite, orbWarp 8s ease-in-out infinite alternate;
-    box-shadow: 0 0 60px rgba(147, 112, 219, 0.3);
-    z-index: -1;
-}
+/* .orb removed, consolidated below */
 
 @keyframes orbWarp {
     0% {
@@ -2448,10 +2438,11 @@ body {
 .orb {
     position: absolute;
     border-radius: 50%;
-    background: var(--gradient-primary);
-    filter: blur(80px);
+    /* Background handled by JS for dynamic orbs */
     opacity: 0.4;
     animation: floatOrb 20s infinite ease-in-out;
+    will-change: transform;
+    pointer-events: none;
 }
 
 .orb-1 {
@@ -2948,7 +2939,8 @@ body {
 
 /* ===== Character Creation Section ===== */
 .character-creation {
-    padding: 6rem 2rem;
+    padding: 2rem 2rem;
+    /* Reduced top padding from 6rem */
     max-width: 1000px;
     margin: 0 auto;
 }
@@ -3043,13 +3035,19 @@ body {
             "vis"
             "modules";
         grid-template-columns: 1fr;
-        gap: 2rem;
+        gap: 1rem;
+    }
+
+    .engine-header {
+        margin-bottom: 0rem;
     }
 
     .engine-visualization {
         height: 350px;
         width: 100%;
         margin-bottom: -1rem;
+        margin-top: 0;
+        /* Balanced spacing */
     }
 
     .core-container {
@@ -3064,14 +3062,11 @@ body {
 
     /* Compact Module Navigation for Mobile */
     .modules-grid-wrapper {
-        width: 100vw;
-        margin-left: -2rem;
-        /* Counteract section padding */
-        padding: 0 2rem;
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
-        scrollbar-width: none;
-        /* Hide scrollbar */
+        width: 100%;
+        margin-left: 0;
+        padding: 0;
+        overflow-x: visible;
+        overflow-y: visible;
     }
 
     .modules-grid-wrapper::-webkit-scrollbar {
@@ -3079,33 +3074,40 @@ body {
     }
 
     .modules-grid {
-        display: flex;
-        gap: 1rem;
-        padding-bottom: 1rem;
-        width: max-content;
-        /* Ensure horizontal layout */
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 0.5rem;
+        width: 100%;
+        padding-bottom: 0;
     }
 
     .module-card {
-        min-width: 140px;
-        width: 140px;
+        min-width: 0;
+        width: 100%;
         height: auto;
-        /* Allow auto height */
-        padding: 1rem;
+        padding: 0.4rem;
         justify-content: center;
+        gap: 0.25rem;
     }
 
     .module-icon {
-        font-size: 2rem;
+        font-size: 1.5rem;
     }
 
     .module-info h3 {
-        font-size: 0.9rem;
+        font-size: 0.75rem;
+        margin: 0;
+        line-height: 1.1;
     }
 
     .module-info p {
         display: none;
         /* Hide description on mobile for compactness */
+    }
+
+    /* Core Labels - Hide on mobile to prevent overlap */
+    .core-label {
+        display: none !important;
     }
 
     /* Character Creation Mobile */
@@ -3151,13 +3153,16 @@ body {
         max-width: 40%;
         padding: 0;
         margin: 0;
+        padding-top: 1rem;
+        /* Adjusted height again */
     }
 
     .goal-tabs {
         display: flex;
         flex-direction: column;
         /* Vertical stack */
-        gap: 0.85rem;
+        gap: 0.4rem;
+        /* Reduced gap */
         /* Increased spacing */
         background: transparent;
         border-radius: 0;
