@@ -358,6 +358,26 @@ function initTherapyCards() {
 
     // openModal/closeModal functions were here, now global
 
+    // Mobile Carousel Scroll Sync
+    const carousel = document.querySelector('.character-cards-grid');
+    const indicators = document.querySelectorAll('.dot');
+
+    if (carousel && indicators.length) {
+        carousel.addEventListener('scroll', () => {
+            const scrollLeft = carousel.scrollLeft;
+            const cardWidth = carousel.firstElementChild.offsetWidth;
+            const cardIndex = Math.round(scrollLeft / cardWidth);
+
+            indicators.forEach((dot, index) => {
+                if (index === cardIndex) {
+                    dot.classList.add('active');
+                } else {
+                    dot.classList.remove('active');
+                }
+            });
+        });
+    }
+
     cards.forEach(card => {
         // Card click - toggle selection
         card.addEventListener('click', () => {
