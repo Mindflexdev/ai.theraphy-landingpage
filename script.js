@@ -10,6 +10,177 @@ document.addEventListener('DOMContentLoaded', () => {
     initCarouselScroll();
 });
 
+// ===== Shared Data & Modal Logic =====
+// Define therapyData globally so both cards and engine can access it
+const therapyData = {
+    cbt: {
+        title: 'Cognitive Behavioral Therapy (CBT)',
+        tagline: '"Change your thoughts, change your life."',
+        whatIsIt: 'Our thoughts, feelings, and behaviors are interconnected. By changing negative thought patterns, we can change how we feel and act.',
+        inventor: 'Aaron Beck',
+        era: '1960s',
+        originDesc: 'Beck noticed his depressed patients had automatic negative thoughts. He realized identifying and challenging these thoughts could alleviate symptoms.',
+        bestFor: ['Anxiety & Depression', 'Phobias', 'OCD', 'Sleep disorders'],
+        techniques: ['Cognitive restructuring', 'Exposure therapy', 'Behavioral experiments', 'Thought records']
+    },
+    act: {
+        title: 'Acceptance & Commitment Therapy (ACT)',
+        tagline: '"Embrace what you cannot change, commit to what you value."',
+        whatIsIt: 'ACT helps you accept difficult thoughts and feelings rather than fighting them, while taking action aligned with your values.',
+        inventor: 'Steven C. Hayes',
+        era: '1980s',
+        originDesc: 'Hayes developed ACT as a form of clinical behavior analysis, combining acceptance and mindfulness strategies with commitment and behavior-change strategies.',
+        bestFor: ['Anxiety', 'Depression', 'Chronic pain', 'Stress management'],
+        techniques: ['Mindfulness', 'Values clarification', 'Cognitive defusion', 'Committed action']
+    },
+    dbt: {
+        title: 'Dialectical Behavior Therapy (DBT)',
+        tagline: '"Finding balance between acceptance and change."',
+        whatIsIt: 'DBT combines cognitive-behavioral techniques with concepts of mindfulness and acceptance, helping you manage intense emotions.',
+        inventor: 'Marsha M. Linehan',
+        era: '1980s',
+        originDesc: 'Linehan developed DBT specifically for treating borderline personality disorder, incorporating zen practices with behavioral science.',
+        bestFor: ['Borderline personality', 'Self-harm', 'Emotional dysregulation', 'Relationship issues'],
+        techniques: ['Distress tolerance', 'Emotion regulation', 'Interpersonal effectiveness', 'Mindfulness skills']
+    },
+    psychodynamic: {
+        title: 'Psychodynamic Therapy',
+        tagline: '"Understanding the past to transform the present."',
+        whatIsIt: 'Explores how unconscious thoughts and past experiences shape current behavior and relationships.',
+        inventor: 'Sigmund Freud (foundations)',
+        era: 'Early 1900s',
+        originDesc: 'Evolved from psychoanalysis, focusing on unconscious processes and their influence on behavior through the therapeutic relationship.',
+        bestFor: ['Depression', 'Anxiety', 'Relationship patterns', 'Identity issues'],
+        techniques: ['Free association', 'Dream analysis', 'Transference exploration', 'Insight development']
+    },
+    humanistic: {
+        title: 'Humanistic/Person-Centered Therapy',
+        tagline: '"You have within you the resources for growth."',
+        whatIsIt: 'Focuses on personal growth and self-actualization, believing people are inherently good and capable of making rational choices.',
+        inventor: 'Carl Rogers',
+        era: '1950s',
+        originDesc: 'Rogers believed that given the right conditions—empathy, unconditional positive regard, and genuineness—people naturally move toward growth.',
+        bestFor: ['Self-esteem issues', 'Life transitions', 'Personal growth', 'Relationship problems'],
+        techniques: ['Active listening', 'Unconditional positive regard', 'Empathic understanding', 'Genuineness']
+    },
+    schema: {
+        title: 'Schema Therapy',
+        tagline: '"Healing deep patterns from the past."',
+        whatIsIt: 'Identifies and changes deep-rooted patterns (schemas) developed in childhood that negatively affect adult life.',
+        inventor: 'Jeffrey Young',
+        era: '1990s',
+        originDesc: 'Young integrated CBT with attachment theory and psychodynamic concepts to address chronic psychological problems.',
+        bestFor: ['Personality disorders', 'Chronic depression', 'Relationship issues', 'Childhood trauma'],
+        techniques: ['Schema identification', 'Limited reparenting', 'Imagery rescripting', 'Mode work']
+    },
+    gestalt: {
+        title: 'Gestalt Therapy',
+        tagline: '"Be here now, fully present."',
+        whatIsIt: 'Focuses on present-moment awareness and understanding how past experiences influence current perceptions and behaviors.',
+        inventor: 'Fritz Perls',
+        era: '1940s-1950s',
+        originDesc: 'Perls developed this experiential approach emphasizing personal responsibility and the here-and-now experience.',
+        bestFor: ['Self-awareness', 'Unfinished business', 'Present-moment issues', 'Creative blocks'],
+        techniques: ['Empty chair technique', 'Awareness exercises', 'Dream work', 'Role-playing']
+    },
+    somatic: {
+        title: 'Somatic Therapy',
+        tagline: '"The body remembers what the mind forgets."',
+        whatIsIt: 'Addresses physical manifestations of trauma and stress, recognizing the mind-body connection in healing.',
+        inventor: 'Various (Peter Levine, Pat Ogden)',
+        era: '1970s-present',
+        originDesc: 'Emerged from observations that trauma is stored in the body and can be released through body-based interventions.',
+        bestFor: ['Trauma & PTSD', 'Chronic pain', 'Stress', 'Anxiety'],
+        techniques: ['Body awareness', 'Breathwork', 'Movement', 'Touch therapy']
+    },
+    systemic: {
+        title: 'Systemic/Family Therapy',
+        tagline: '"Healing happens in relationship."',
+        whatIsIt: 'Views problems in context of family and social systems, understanding how relationships influence individual behavior.',
+        inventor: 'Murray Bowen, Salvador Minuchin',
+        era: '1950s-1960s',
+        originDesc: 'Developed from the recognition that individuals are best understood in the context of their family and social relationships.',
+        bestFor: ['Family conflicts', 'Couple issues', 'Parenting challenges', 'Communication problems'],
+        techniques: ['Genograms', 'Family mapping', 'Circular questioning', 'Reframing']
+    },
+    mbct: {
+        title: 'Mindfulness-Based Cognitive Therapy (MBCT)',
+        tagline: '"Observe your thoughts without judgment."',
+        whatIsIt: 'Combines cognitive therapy with mindfulness practices to help prevent relapse in depression.',
+        inventor: 'Zindel Segal, Mark Williams, John Teasdale',
+        era: '1990s',
+        originDesc: 'Developed specifically to prevent depression relapse by teaching patients to recognize and disengage from ruminative thought patterns.',
+        bestFor: ['Depression relapse prevention', 'Anxiety', 'Stress', 'Rumination'],
+        techniques: ['Meditation', 'Body scan', 'Mindful breathing', 'Cognitive awareness']
+    },
+    psychoanalysis: {
+        title: 'Psychoanalysis',
+        tagline: '"Where id was, there ego shall be."',
+        whatIsIt: 'Deep exploration of the unconscious mind to understand how early experiences shape personality and current struggles.',
+        inventor: 'Sigmund Freud',
+        era: '1890s',
+        originDesc: 'Freud pioneered the talking cure, developing techniques to access unconscious material through free association and dream analysis.',
+        bestFor: ['Deep-seated issues', 'Character problems', 'Repeated life patterns', 'Chronic difficulties'],
+        techniques: ['Free association', 'Dream interpretation', 'Analysis of resistance', 'Transference analysis']
+    },
+    eft: {
+        title: 'Emotionally Focused Therapy (EFT)',
+        tagline: '"Creating secure emotional bonds."',
+        whatIsIt: 'Focuses on creating and strengthening emotional bonds between partners through accessing and reprocessing emotional experiences.',
+        inventor: 'Sue Johnson, Les Greenberg',
+        era: '1980s',
+        originDesc: 'Developed by integrating attachment theory with experiential therapy to help couples create secure bonds.',
+        bestFor: ['Couple distress', 'Attachment issues', 'Relationship repair', 'Emotional disconnection'],
+        techniques: ['Emotion tracking', 'Accessing attachment needs', 'Restructuring interactions', 'Creating new cycles']
+    },
+    cft: {
+        title: 'Compassion Focused Therapy (CFT)',
+        tagline: '"Cultivating inner warmth and safety."',
+        whatIsIt: 'Integrates CBT with evolutionary psychology to help those who struggle with shame and self-criticism develop self-compassion.',
+        inventor: 'Paul Gilbert',
+        era: '2000s',
+        originDesc: 'Developed to help patients who could understand the logic of CBT but still felt "bad" emotionally due to high shame.',
+        bestFor: ['Shame', 'Self-criticism', 'Trauma', 'Depression'],
+        techniques: ['Compassionate mind training', 'Soothing rhythm breathing', 'Safe place imagery', 'Compassionate self']
+    }
+};
+
+function openModal(therapyKey, interactive = false) {
+    const modal = document.getElementById('therapyModal');
+    const data = therapyData[therapyKey];
+    if (!data) return;
+
+    document.getElementById('modalTitle').textContent = data.title;
+    document.getElementById('modalTagline').textContent = data.tagline;
+    document.getElementById('modalWhatIsIt').textContent = data.whatIsIt;
+    document.getElementById('modalInventor').textContent = data.inventor;
+    document.getElementById('modalEra').textContent = data.era;
+    document.getElementById('modalOriginDesc').textContent = data.originDesc;
+
+    const tagsContainer = document.getElementById('modalBestFor');
+    tagsContainer.innerHTML = data.bestFor.map(tag => `<span class="modal-tag">${tag}</span>`).join('');
+
+    const techniquesList = document.getElementById('modalTechniques');
+    techniquesList.innerHTML = data.techniques.map(tech => `<li>${tech}</li>`).join('');
+
+    modal.classList.add('active');
+
+    if (interactive) {
+        modal.classList.add('interactive-mode');
+        // Allow clicking transparent areas
+        document.body.style.overflow = '';
+    } else {
+        modal.classList.remove('interactive-mode');
+        document.body.style.overflow = 'hidden';
+    }
+}
+
+function closeModal() {
+    const modal = document.getElementById('therapyModal');
+    modal.classList.remove('active');
+    document.body.style.overflow = '';
+}
+
 // ===== Goal Tabs =====
 function initGoalTabs() {
     const tabs = document.querySelectorAll('.goal-tab');
@@ -178,160 +349,14 @@ function createFeathers() {
 
 // ===== Therapy Cards =====
 function initTherapyCards() {
+    // Therapy data was here, now global
+
     const cards = document.querySelectorAll('.therapy-card');
     const modal = document.getElementById('therapyModal');
     const modalClose = document.getElementById('modalClose');
     const overlay = modal.querySelector('.modal-overlay');
 
-    // Therapy data for modal
-    const therapyData = {
-        cbt: {
-            title: 'Cognitive Behavioral Therapy (CBT)',
-            tagline: '"Change your thoughts, change your life."',
-            whatIsIt: 'Our thoughts, feelings, and behaviors are interconnected. By changing negative thought patterns, we can change how we feel and act.',
-            inventor: 'Aaron Beck',
-            era: '1960s',
-            originDesc: 'Beck noticed his depressed patients had automatic negative thoughts. He realized identifying and challenging these thoughts could alleviate symptoms.',
-            bestFor: ['Anxiety & Depression', 'Phobias', 'OCD', 'Sleep disorders'],
-            techniques: ['Cognitive restructuring', 'Exposure therapy', 'Behavioral experiments', 'Thought records']
-        },
-        act: {
-            title: 'Acceptance & Commitment Therapy (ACT)',
-            tagline: '"Embrace what you cannot change, commit to what you value."',
-            whatIsIt: 'ACT helps you accept difficult thoughts and feelings rather than fighting them, while taking action aligned with your values.',
-            inventor: 'Steven C. Hayes',
-            era: '1980s',
-            originDesc: 'Hayes developed ACT as a form of clinical behavior analysis, combining acceptance and mindfulness strategies with commitment and behavior-change strategies.',
-            bestFor: ['Anxiety', 'Depression', 'Chronic pain', 'Stress management'],
-            techniques: ['Mindfulness', 'Values clarification', 'Cognitive defusion', 'Committed action']
-        },
-        dbt: {
-            title: 'Dialectical Behavior Therapy (DBT)',
-            tagline: '"Finding balance between acceptance and change."',
-            whatIsIt: 'DBT combines cognitive-behavioral techniques with concepts of mindfulness and acceptance, helping you manage intense emotions.',
-            inventor: 'Marsha M. Linehan',
-            era: '1980s',
-            originDesc: 'Linehan developed DBT specifically for treating borderline personality disorder, incorporating zen practices with behavioral science.',
-            bestFor: ['Borderline personality', 'Self-harm', 'Emotional dysregulation', 'Relationship issues'],
-            techniques: ['Distress tolerance', 'Emotion regulation', 'Interpersonal effectiveness', 'Mindfulness skills']
-        },
-        psychodynamic: {
-            title: 'Psychodynamic Therapy',
-            tagline: '"Understanding the past to transform the present."',
-            whatIsIt: 'Explores how unconscious thoughts and past experiences shape current behavior and relationships.',
-            inventor: 'Sigmund Freud (foundations)',
-            era: 'Early 1900s',
-            originDesc: 'Evolved from psychoanalysis, focusing on unconscious processes and their influence on behavior through the therapeutic relationship.',
-            bestFor: ['Depression', 'Anxiety', 'Relationship patterns', 'Identity issues'],
-            techniques: ['Free association', 'Dream analysis', 'Transference exploration', 'Insight development']
-        },
-        humanistic: {
-            title: 'Humanistic/Person-Centered Therapy',
-            tagline: '"You have within you the resources for growth."',
-            whatIsIt: 'Focuses on personal growth and self-actualization, believing people are inherently good and capable of making rational choices.',
-            inventor: 'Carl Rogers',
-            era: '1950s',
-            originDesc: 'Rogers believed that given the right conditions—empathy, unconditional positive regard, and genuineness—people naturally move toward growth.',
-            bestFor: ['Self-esteem issues', 'Life transitions', 'Personal growth', 'Relationship problems'],
-            techniques: ['Active listening', 'Unconditional positive regard', 'Empathic understanding', 'Genuineness']
-        },
-        schema: {
-            title: 'Schema Therapy',
-            tagline: '"Healing deep patterns from the past."',
-            whatIsIt: 'Identifies and changes deep-rooted patterns (schemas) developed in childhood that negatively affect adult life.',
-            inventor: 'Jeffrey Young',
-            era: '1990s',
-            originDesc: 'Young integrated CBT with attachment theory and psychodynamic concepts to address chronic psychological problems.',
-            bestFor: ['Personality disorders', 'Chronic depression', 'Relationship issues', 'Childhood trauma'],
-            techniques: ['Schema identification', 'Limited reparenting', 'Imagery rescripting', 'Mode work']
-        },
-        gestalt: {
-            title: 'Gestalt Therapy',
-            tagline: '"Be here now, fully present."',
-            whatIsIt: 'Focuses on present-moment awareness and understanding how past experiences influence current perceptions and behaviors.',
-            inventor: 'Fritz Perls',
-            era: '1940s-1950s',
-            originDesc: 'Perls developed this experiential approach emphasizing personal responsibility and the here-and-now experience.',
-            bestFor: ['Self-awareness', 'Unfinished business', 'Present-moment issues', 'Creative blocks'],
-            techniques: ['Empty chair technique', 'Awareness exercises', 'Dream work', 'Role-playing']
-        },
-        somatic: {
-            title: 'Somatic Therapy',
-            tagline: '"The body remembers what the mind forgets."',
-            whatIsIt: 'Addresses physical manifestations of trauma and stress, recognizing the mind-body connection in healing.',
-            inventor: 'Various (Peter Levine, Pat Ogden)',
-            era: '1970s-present',
-            originDesc: 'Emerged from observations that trauma is stored in the body and can be released through body-based interventions.',
-            bestFor: ['Trauma & PTSD', 'Chronic pain', 'Stress', 'Anxiety'],
-            techniques: ['Body awareness', 'Breathwork', 'Movement', 'Touch therapy']
-        },
-        systemic: {
-            title: 'Systemic/Family Therapy',
-            tagline: '"Healing happens in relationship."',
-            whatIsIt: 'Views problems in context of family and social systems, understanding how relationships influence individual behavior.',
-            inventor: 'Murray Bowen, Salvador Minuchin',
-            era: '1950s-1960s',
-            originDesc: 'Developed from the recognition that individuals are best understood in the context of their family and social relationships.',
-            bestFor: ['Family conflicts', 'Couple issues', 'Parenting challenges', 'Communication problems'],
-            techniques: ['Genograms', 'Family mapping', 'Circular questioning', 'Reframing']
-        },
-        mbct: {
-            title: 'Mindfulness-Based Cognitive Therapy (MBCT)',
-            tagline: '"Observe your thoughts without judgment."',
-            whatIsIt: 'Combines cognitive therapy with mindfulness practices to help prevent relapse in depression.',
-            inventor: 'Zindel Segal, Mark Williams, John Teasdale',
-            era: '1990s',
-            originDesc: 'Developed specifically to prevent depression relapse by teaching patients to recognize and disengage from ruminative thought patterns.',
-            bestFor: ['Depression relapse prevention', 'Anxiety', 'Stress', 'Rumination'],
-            techniques: ['Meditation', 'Body scan', 'Mindful breathing', 'Cognitive awareness']
-        },
-        psychoanalysis: {
-            title: 'Psychoanalysis',
-            tagline: '"Where id was, there ego shall be."',
-            whatIsIt: 'Deep exploration of the unconscious mind to understand how early experiences shape personality and current struggles.',
-            inventor: 'Sigmund Freud',
-            era: '1890s',
-            originDesc: 'Freud pioneered the talking cure, developing techniques to access unconscious material through free association and dream analysis.',
-            bestFor: ['Deep-seated issues', 'Character problems', 'Repeated life patterns', 'Chronic difficulties'],
-            techniques: ['Free association', 'Dream interpretation', 'Analysis of resistance', 'Transference analysis']
-        },
-        eft: {
-            title: 'Emotionally Focused Therapy (EFT)',
-            tagline: '"Creating secure emotional bonds."',
-            whatIsIt: 'Focuses on creating and strengthening emotional bonds between partners through accessing and reprocessing emotional experiences.',
-            inventor: 'Sue Johnson, Les Greenberg',
-            era: '1980s',
-            originDesc: 'Developed by integrating attachment theory with experiential therapy to help couples create secure bonds.',
-            bestFor: ['Couple distress', 'Attachment issues', 'Relationship repair', 'Emotional disconnection'],
-            techniques: ['Emotion tracking', 'Accessing attachment needs', 'Restructuring interactions', 'Creating new cycles']
-        }
-    };
-
-    function openModal(therapyKey) {
-        const data = therapyData[therapyKey];
-        if (!data) return;
-
-        document.getElementById('modalTitle').textContent = data.title;
-        document.getElementById('modalTagline').textContent = data.tagline;
-        document.getElementById('modalWhatIsIt').textContent = data.whatIsIt;
-        document.getElementById('modalInventor').textContent = data.inventor;
-        document.getElementById('modalEra').textContent = data.era;
-        document.getElementById('modalOriginDesc').textContent = data.originDesc;
-
-        const tagsContainer = document.getElementById('modalBestFor');
-        tagsContainer.innerHTML = data.bestFor.map(tag => `<span class="modal-tag">${tag}</span>`).join('');
-
-        const techniquesList = document.getElementById('modalTechniques');
-        techniquesList.innerHTML = data.techniques.map(tech => `<li>${tech}</li>`).join('');
-
-        modal.classList.add('active');
-        document.body.style.overflow = 'hidden';
-    }
-
-    function closeModal() {
-        modal.classList.remove('active');
-        document.body.style.overflow = '';
-    }
+    // openModal/closeModal functions were here, now global
 
     cards.forEach(card => {
         // Card click - toggle selection
@@ -533,7 +558,7 @@ function initEngineControls() {
             const delay = index * 0.1; // Staggered animation
 
             const nodeEl = document.createElement('div');
-            nodeEl.className = 'orbit-node';
+            nodeEl.className = 'orbit-node clickable';
             nodeEl.innerHTML = `<span class="orbit-node-icon">${node.icon}</span> ${node.name}`;
 
             // Set custom properties for CSS animation
@@ -560,8 +585,48 @@ function initEngineControls() {
             nodeEl.style.animation = `orbitFloat ${duration}s linear infinite`;
             nodeEl.style.animationDelay = `-${(duration / totalNodes) * index}s`; // Distribute along orbit
 
+            // Interaction: Pause on hover
+            nodeEl.addEventListener('mouseenter', () => {
+                nodeEl.style.animationPlayState = 'paused';
+                nodeEl.style.zIndex = '100';
+            });
+            nodeEl.addEventListener('mouseleave', () => {
+                nodeEl.style.animationPlayState = 'running';
+                nodeEl.style.zIndex = '';
+            });
+
+            // Interaction: Click to open info
+            nodeEl.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const key = findTherapyKey(node.name);
+                if (key) {
+                    openModal(key, true); // True for interactive mode
+                }
+            });
+
             orbitsLayer.appendChild(nodeEl);
         });
+    }
+
+    function findTherapyKey(name) {
+        // Map display names to keys in therapyData
+        const map = {
+            // Third Wave
+            'ACT': 'act', 'DBT': 'dbt', 'Schema': 'schema', 'MBCT': 'mbct', 'CFT': 'cft',
+            // CBT
+            'Restructuring': 'cbt', 'Exposure': 'cbt', 'Behavioral': 'cbt', 'Logic': 'cbt', 'CBT': 'cbt',
+            // Psychodynamic
+            'Unconscious': 'psychodynamic', 'Dreams': 'psychodynamic', 'Shadow': 'psychodynamic', 'Attachment': 'psychodynamic', 'Psychodynamic': 'psychodynamic',
+            // Systemic
+            'Family': 'systemic', 'Context': 'systemic', 'Patterns': 'systemic', 'Relations': 'systemic', 'Systemic': 'systemic',
+            // Humanistic
+            'Empathy': 'humanistic', 'Growth': 'humanistic', 'Self': 'humanistic', 'Presence': 'humanistic', 'Humanistic': 'humanistic',
+            // Gestalt
+            'Here & Now': 'gestalt', 'Awareness': 'gestalt', 'Wholeness': 'gestalt', 'Contact': 'gestalt', 'Gestalt': 'gestalt',
+            // Others
+            'Somatic': 'somatic', 'EFT': 'eft', 'Psychoanalysis': 'psychoanalysis'
+        };
+        return map[name] || null;
     }
 
     // Auto-select "Third Wave" on load

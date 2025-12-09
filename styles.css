@@ -188,6 +188,13 @@ body {
     box-shadow: 0 10px 30px var(--glow-purple);
 }
 
+@media (max-width: 768px) {
+    .nav-cta {
+        padding: 0.5rem 1rem;
+        font-size: 0.85rem;
+    }
+}
+
 /* ===== Hero Section ===== */
 .hero {
     min-height: auto;
@@ -2145,13 +2152,33 @@ body {
         font-size: 0.8rem;
     }
 
-    /* Character grid responsive */
+    /* Character grid responsive: Carousel Mode */
     .character-cards-grid {
-        grid-template-columns: repeat(2, 1fr);
+        display: flex;
+        grid-template-columns: none;
+        /* Override grid */
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        padding-bottom: 1rem;
+        gap: 1rem;
+        scrollbar-width: none;
+        /* Hide scrollbar */
+    }
+
+    .character-cards-grid::-webkit-scrollbar {
+        display: none;
+    }
+
+    .guide-card {
+        min-width: 100%;
+        /* Full width card */
+        scroll-snap-align: center;
+        margin: 0;
     }
 
     .guide-image {
-        height: 220px;
+        height: 280px;
+        /* Taller image for focus */
     }
 }
 
@@ -2238,14 +2265,22 @@ body {
     visibility: visible;
 }
 
+.therapy-modal.interactive-mode .modal-overlay {
+    pointer-events: none;
+    /* Allow clicks to pass through overlay */
+    background: transparent;
+    /* Make overlay invisible or keep slightly visible if preferred, let's go transparent for "clean" look */
+}
+
 .modal-overlay {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.8);
-    backdrop-filter: blur(10px);
+    background: rgba(0, 0, 0, 0.2);
+    /* Transparent to show animation */
+    backdrop-filter: blur(5px);
 }
 
 .modal-content {
@@ -2254,11 +2289,15 @@ body {
     max-width: 600px;
     max-height: 85vh;
     overflow-y: auto;
-    background: rgba(30, 35, 50, 0.98);
+    background: rgba(18, 18, 25, 0.7);
+    /* Glassy dark background */
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
     border-radius: 20px;
     border: 1px solid var(--glass-border);
     transform: translateY(30px);
     transition: transform 0.3s;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
 }
 
 .therapy-modal.active .modal-content {
@@ -2761,6 +2800,20 @@ body {
     animation: fadeIn 0.5s ease-out;
 }
 
+.orbit-node.clickable {
+    cursor: pointer;
+    pointer-events: auto;
+    /* Enable clicks */
+    transition: transform 0.3s, background 0.3s, border-color 0.3s;
+}
+
+.orbit-node.clickable:hover {
+    transform: scale(1.1);
+    background: rgba(30, 30, 50, 0.95);
+    border-color: var(--text-primary);
+    z-index: 100;
+}
+
 .orbit-node-icon {
     font-size: 1rem;
 }
@@ -3132,77 +3185,72 @@ body {
 
 
 @media (max-width: 768px) {
-
-    /* Split Layout Container */
-    .mobile-split-layout {
-        display: flex;
-        align-items: flex-start;
-        /* Align to top */
-        gap: 1rem;
-        width: 100%;
-        overflow: hidden;
-        /* Prevent horizontal scroll on body */
-        padding-top: 1rem;
-        /* Slight offset from very top */
+    .nav-cta {
+        padding: 0.5rem 1rem;
+        /* Reduced padding */
+        font-size: 0.9rem;
+        /* Reduced font size */
     }
 
-    /* Left Column: Goal Tabs */
+    /* Split Layout Container - Stack on mobile */
+    .mobile-split-layout {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+        width: 100%;
+        padding-top: 0;
+    }
+
+    /* Goal Tabs: 3 on top, 4 on bottom */
     .goal-categories {
-        flex: 0 0 40%;
-        /* Take up approx 40% of width */
-        max-width: 40%;
+        flex: 0 0 auto;
+        width: 100%;
+        max-width: 100%;
         padding: 0;
-        margin: 0;
-        padding-top: 1rem;
-        /* Adjusted height again */
+        margin-bottom: 1rem;
     }
 
     .goal-tabs {
-        display: flex;
-        flex-direction: column;
-        /* Vertical stack */
-        gap: 0.25rem;
-        /* Tighter gap */
-        /* Increased spacing */
-        background: transparent;
-        border-radius: 0;
-        padding: 0;
-        align-items: flex-start;
-        /* Left align text */
-        overflow-y: auto;
-        max-height: 500px;
-        /* Limit height */
+        display: grid;
+        grid-template-columns: repeat(12, 1fr);
+        gap: 0.5rem;
+        width: 100%;
+        overflow-y: visible;
+        max-height: none;
     }
 
     .goal-tab {
         width: 100%;
-        text-align: left;
-        padding: 0.5rem 0.8rem;
-        /* Smaller padding */
-        /* Bigger touch target */
-        font-size: 0.85rem;
-        /* Compact font size */
-        /* Slightly larger text */
-        background: transparent;
-        border: none;
+        text-align: center;
+        padding: 0.6rem 0.2rem;
+        font-size: 0.75rem;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid var(--glass-border);
         color: var(--text-secondary);
         border-radius: 12px;
-        white-space: normal;
-        /* Allow text wrap */
-        line-height: 1.15;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+    }
+
+    /* First 3 items span 4 columns (12/3 = 4) */
+    .goal-tab:nth-child(-n+3) {
+        grid-column: span 4;
+    }
+
+    /* Remaining 4 items span 3 columns (12/4 = 3) */
+    .goal-tab:nth-child(n+4) {
+        grid-column: span 3;
     }
 
     .goal-tab:hover {
-        background: rgba(255, 255, 255, 0.05);
+        background: rgba(255, 255, 255, 0.1);
     }
 
     .goal-tab.active {
-        background: rgba(255, 255, 255, 0.1);
-        /* Subtle active bg */
-        color: var(--text-primary);
-        font-weight: 500;
-        box-shadow: none;
-        /* Remove heavy shadow */
+        background: #3d5a80;
+        color: white;
+        border-color: #3d5a80;
     }
 
     /* Right Column: Character Carousel */
