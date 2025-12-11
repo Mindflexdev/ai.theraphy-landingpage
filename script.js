@@ -794,10 +794,15 @@ async function initGoalTabs() {
         // Reset carousel position to first REAL character
         currentCharIndex = 0;
 
-        // Wait for layout
+        // Wait for layout and images to potentially load layout headers
         setTimeout(() => {
-            scrollToCharacter(0, false);
-        }, 100);
+            const cards = grid.querySelectorAll('.guide-card');
+            const CLONE_COUNT = 2;
+            if (cards.length > CLONE_COUNT) {
+                // Scroll to the first real character (Luna Starlight)
+                cards[CLONE_COUNT].scrollIntoView({ behavior: 'auto', inline: 'center', block: 'nearest' });
+            }
+        }, 400); // Increased delay to ensure rendering is complete
 
         // Infinite Scroll Handler
         let scrollTimeout;
