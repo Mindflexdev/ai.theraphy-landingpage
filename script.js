@@ -14,48 +14,77 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // ===== Theme Toggle =====
 function initThemeToggle() {
-    const toggle = document.getElementById('themeToggle');
-    if (!toggle) return;
-
     // Check for saved preference - default to LIGHT mode
-    const savedTheme = localStorage.getItem('theme');
+    const savedTheme = localStorage.getItem('theme') || 'light';
 
-    // Default to light mode if no preference saved
-    if (savedTheme === 'dark') {
-        document.body.classList.remove('light-mode');
-        toggle.textContent = '☀️'; // Show sun to switch to light
-    } else {
+    // Apply saved theme (always, even if toggle is hidden)
+    if (savedTheme === 'light') {
         document.body.classList.add('light-mode');
-        toggle.textContent = '🌙'; // Show moon to switch to dark
+    } else {
+        document.body.classList.remove('light-mode');
     }
 
-    toggle.addEventListener('click', () => {
-        document.body.classList.toggle('light-mode');
+    // If toggle element exists, set up interactivity
+    const toggleContainer = document.getElementById('themeToggle');
+    if (!toggleContainer) return;
 
-        // Save preference and update icon
-        const isLight = document.body.classList.contains('light-mode');
-        localStorage.setItem('theme', isLight ? 'light' : 'dark');
-        toggle.textContent = isLight ? '🌙' : '☀️';
+    const icons = toggleContainer.querySelectorAll('.theme-icon');
+
+    // Set initial active state
+    icons.forEach(icon => {
+        icon.classList.toggle('active', icon.dataset.theme === savedTheme);
+    });
+
+    // Add click handlers to each icon
+    icons.forEach(icon => {
+        icon.addEventListener('click', () => {
+            const newTheme = icon.dataset.theme;
+            const currentTheme = document.body.classList.contains('light-mode') ? 'light' : 'dark';
+
+            if (newTheme === currentTheme) return; // Already active
+
+            // Toggle theme
+            document.body.classList.toggle('light-mode');
+
+            // Update active states
+            icons.forEach(i => i.classList.toggle('active', i.dataset.theme === newTheme));
+
+            // Save preference
+            localStorage.setItem('theme', newTheme);
+        });
     });
 }
 
 // ===== Language Toggle =====
 function initLangToggle() {
-    const toggle = document.getElementById('langToggle');
-    if (!toggle) return;
+    const toggleContainer = document.getElementById('langToggle');
+    if (!toggleContainer) return;
+
+    const flags = toggleContainer.querySelectorAll('.lang-flag');
 
     // Check for saved language - default to English
     let currentLang = localStorage.getItem('lang') || 'en';
 
-    // Show opposite language to switch to
-    toggle.textContent = currentLang === 'en' ? 'DE' : 'EN';
+    // Set initial active state
+    flags.forEach(flag => {
+        flag.classList.toggle('active', flag.dataset.lang === currentLang);
+    });
     applyLanguage(currentLang);
 
-    toggle.addEventListener('click', () => {
-        currentLang = currentLang === 'en' ? 'de' : 'en';
-        toggle.textContent = currentLang === 'en' ? 'DE' : 'EN';
-        localStorage.setItem('lang', currentLang);
-        applyLanguage(currentLang);
+    // Add click handlers to each flag
+    flags.forEach(flag => {
+        flag.addEventListener('click', () => {
+            const newLang = flag.dataset.lang;
+            if (newLang === currentLang) return; // Already active
+
+            currentLang = newLang;
+
+            // Update active states
+            flags.forEach(f => f.classList.toggle('active', f.dataset.lang === currentLang));
+
+            localStorage.setItem('lang', currentLang);
+            applyLanguage(currentLang);
+        });
     });
 }
 
@@ -692,7 +721,6 @@ async function fetchAndProcessCharacters() {
 
 // ===== Goal Tabs =====
 async function initGoalTabs() {
-    const tabs = document.querySelectorAll('.goal-tab');
     const grid = document.querySelector('.character-cards-grid');
 
     // Show loading state
@@ -712,7 +740,7 @@ async function initGoalTabs() {
         });
     }
 
-    // Group characters
+    // Group characters by category
     const characterMap = {};
     allCharacters.forEach(char => {
         const cat = (char.category || char.goal || 'sleep').toLowerCase();
@@ -720,15 +748,31 @@ async function initGoalTabs() {
         characterMap[cat].push({
             name: char.name,
             desc: char.description || char.desc || 'Your personal AI guide.',
-            img: char.image_url || char.img
+            img: char.image_url || char.img,
+            category: cat
         });
     });
 
-    function updateCharacters(goal) {
-        const characters = characterMap[goal] || characterMap['sleep'] || [];
+    // Create a mixed array: take one character from each category in rotation
+    const categories = ['sleep', 'performance', 'self-worth', 'fears', 'stress', 'happier', 'grateful'];
+    const mixedCharacters = [];
+    const maxPerCategory = Math.max(...Object.values(characterMap).map(arr => arr.length));
 
+    // Round-robin through categories to create diverse mix
+    for (let i = 0; i < maxPerCategory; i++) {
+        for (const cat of categories) {
+            if (characterMap[cat] && characterMap[cat][i]) {
+                mixedCharacters.push(characterMap[cat][i]);
+            }
+        }
+    }
+
+    // Limit to reasonable number (e.g., 7-10 characters for good UX)
+    const displayCharacters = mixedCharacters.slice(0, 7);
+
+    function renderCharacters(characters) {
         if (characters.length === 0) {
-            grid.innerHTML = '<div style="color:rgba(255,255,255,0.5); text-align:center; padding:2rem; width:100%;">No guides found for this goal.</div>';
+            grid.innerHTML = '<div style="color:rgba(255,255,255,0.5); text-align:center; padding:2rem; width:100%;">No guides found.</div>';
             return;
         }
 
@@ -827,17 +871,10 @@ async function initGoalTabs() {
         });
     }
 
-    tabs.forEach(tab => {
-        tab.addEventListener('click', () => {
-            tabs.forEach(t => t.classList.remove('active'));
-            tab.classList.add('active');
-            updateCharacters(tab.dataset.goal);
-        });
-    });
-
-    // Initial load
-    updateCharacters('sleep');
+    // Render mixed characters directly (no tabs needed)
+    renderCharacters(displayCharacters);
 }
+
 
 function getFallbackCharacters() {
     return {

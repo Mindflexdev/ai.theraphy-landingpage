@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description"
         content="ai.therapy - Your personal AI therapy companion. Experience transformative mental wellness with our cinematic, immersive platform featuring personalized AI therapists.">
-    <title>ai.therapy - Integrative Psychology Engine</title>
+    <title>ai.therapy - Integrative Psychology</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -34,15 +34,17 @@
             </a>
             <div class="nav-right">
                 <div class="toggle-group">
-                    <button class="toggle-btn" id="langToggle" aria-label="Toggle language">DE</button>
-                    <button class="toggle-btn" id="themeToggle" aria-label="Toggle light/dark mode">🌙</button>
+                    <div class="lang-toggle-dual" id="langToggle">
+                        <span class="lang-flag active" data-lang="en">🇬🇧</span>
+                        <span class="lang-flag" data-lang="de">🇩🇪</span>
+                    </div>
+                    <!-- Theme toggle hidden for now -->
                 </div>
                 <ul class="nav-links">
                     <li><a href="blog.html" data-en="Blog" data-de="Blog">Blog</a></li>
                     <li><a href="#about" data-en="About" data-de="Über uns">About</a></li>
                 </ul>
-                <a href="#" class="nav-cta" data-en="Begin Your Journey" data-de="Starte deine Reise">Begin Your
-                    Journey</a>
+                <a href="#" class="nav-cta" data-en="Sign Up" data-de="Registrieren">Sign Up</a>
             </div>
         </div>
     </nav>
@@ -52,27 +54,16 @@
         <div class="hero-header">
 
             <h1 class="hero-title">
-                <span class="title-line" data-en="Your Mind Deserves" data-de="Dein Geist verdient">Your Mind
-                    Deserves</span>
-                <span class="title-line gradient-text" data-en="A Gentle Guide" data-de="Einen sanften Begleiter">A
-                    Gentle Guide</span>
+                <span class="title-line" data-en="Try ai.therapy" data-de="Probiere ai.therapy">Try ai<span
+                        class="logo-dot">.</span>therapy</span>
+                <span class="title-line gradient-text" data-en="It's free!" data-de="Es ist kostenlos!">It's
+                    free!</span>
             </h1>
 
         </div>
 
+
         <div class="mobile-split-layout">
-            <!-- Goal Category Tabs -->
-            <div class="goal-categories">
-                <div class="goal-tabs">
-                    <button class="goal-tab active" data-goal="sleep">Sleep better</button>
-                    <button class="goal-tab" data-goal="performance">Enhance performance</button>
-                    <button class="goal-tab" data-goal="self-worth">Develop self-worth</button>
-                    <button class="goal-tab" data-goal="fears">Lose fears</button>
-                    <button class="goal-tab" data-goal="stress">Reduce stress</button>
-                    <button class="goal-tab" data-goal="happier">Be happier</button>
-                    <button class="goal-tab" data-goal="grateful">Be more grateful</button>
-                </div>
-            </div>
 
             <!-- Character Grid (3 characters) -->
             <div class="character-grid-section">
@@ -126,8 +117,7 @@
             <div class="engine-header">
                 <!-- <span class="section-tag">Core Architecture</span> -->
                 <h2 class="section-title"><span data-en="Integrative" data-de="Integrative">Integrative</span> <span
-                        class="gradient-text" data-en="Psychology Engine" data-de="Psychologie Engine">Psychology
-                        Engine</span></h2>
+                        class="gradient-text" data-en="Psychology" data-de="Psychologie">Psychology</span></h2>
                 <p class="section-subtitle"
                     data-en="Our LLM has been trained on the full spectrum of therapeutic modalities. Enable specific modules to customize your AI's reasoning architecture."
                     data-de="Unser LLM wurde auf dem gesamten Spektrum therapeutischer Modalitäten trainiert. Aktiviere spezifische Module, um die Denkarchitektur deiner KI anzupassen.">
@@ -224,20 +214,18 @@
     <!-- Character Creation Section -->
     <section class="character-creation" id="create-guide">
         <div class="section-header">
-            <h2 class="section-title">Create Your <span class="gradient-text">Perfect Guide</span></h2>
-            <p class="section-subtitle">
-                Design a therapeutic companion that resonates with your soul
-            </p>
+            <h2 class="section-title">Create your <span class="gradient-text">ai<span
+                        class="logo-dot">.</span>therapist</span></h2>
         </div>
 
         <div class="creation-form">
             <div class="form-group">
-                <label for="guideName">Name Your Guide</label>
-                <input type="text" id="guideName" class="form-input" placeholder="Enter a name for your guide...">
+                <label for="guideName">Name your ai<span class="logo-dot">.</span>therapist</label>
+                <input type="text" id="guideName" class="form-input" placeholder="Enter a name...">
             </div>
 
             <div class="form-group">
-                <label>Therapeutic Approach (Select Multiple)</label>
+                <label>Therapeutic Inspiration (Select Multiple)</label>
                 <div class="approaches-grid">
                     <!-- 12 Approaches -->
                     <button class="approach-btn" data-type="cbt">
@@ -311,32 +299,12 @@
         <div class="footer-content">
             <div class="footer-brand">
                 <div class="logo-orb"></div>
-                <span>ai.therapy</span>
+                <span>ai<span class="logo-dot">.</span>therapy</span>
                 <p>Transforming mental wellness through compassionate AI</p>
-            </div>
-            <div class="footer-links">
-                <div class="footer-col">
-                    <h5>Platform</h5>
-                    <a href="#">Features</a>
-                    <a href="#">Pricing</a>
-                    <a href="#">Security</a>
-                </div>
-                <div class="footer-col">
-                    <h5>Resources</h5>
-                    <a href="#">Blog</a>
-                    <a href="#">Research</a>
-                    <a href="#">Community</a>
-                </div>
-                <div class="footer-col">
-                    <h5>Support</h5>
-                    <a href="#">Help Center</a>
-                    <a href="#">Contact</a>
-                    <a href="#">Crisis Line</a>
-                </div>
             </div>
         </div>
         <div class="footer-bottom">
-            <p>© 2024 ai.therapy. Healing begins here.</p>
+            <p>© 2025 ai<span class="logo-dot">.</span>therapy</p>
         </div>
     </footer>
 

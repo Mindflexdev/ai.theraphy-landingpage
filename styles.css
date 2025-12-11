@@ -98,6 +98,124 @@ body.light-mode .lang-toggle {
     border-color: rgba(0, 114, 255, 0.2);
 }
 
+/* Flag-based Language Toggle */
+.lang-flag-btn {
+    font-size: 1.4rem !important;
+    padding: 0.4rem 0.6rem !important;
+    min-width: 48px;
+    min-height: 40px;
+    border-radius: 10px !important;
+    background: rgba(255, 255, 255, 0.1) !important;
+    border: 2px solid rgba(255, 255, 255, 0.2) !important;
+    transition: all 0.3s ease;
+}
+
+.lang-flag-btn:hover {
+    background: rgba(255, 255, 255, 0.2) !important;
+    transform: scale(1.08);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+body.light-mode .lang-flag-btn {
+    background: rgba(0, 114, 255, 0.08) !important;
+    border-color: rgba(0, 114, 255, 0.2) !important;
+}
+
+body.light-mode .lang-flag-btn:hover {
+    background: rgba(0, 114, 255, 0.15) !important;
+}
+
+/* Dual Flag Language Toggle */
+.lang-toggle-dual {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 12px;
+    padding: 0.35rem 0.5rem;
+    cursor: pointer;
+}
+
+.lang-flag {
+    font-size: 1.3rem;
+    padding: 0.2rem 0.35rem;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    opacity: 0.4;
+    filter: grayscale(60%);
+    cursor: pointer;
+}
+
+.lang-flag:hover {
+    opacity: 0.7;
+    filter: grayscale(30%);
+}
+
+.lang-flag.active {
+    opacity: 1;
+    filter: grayscale(0%);
+    background: rgba(91, 143, 217, 0.25);
+    box-shadow: 0 0 10px rgba(91, 143, 217, 0.3);
+    transform: scale(1.1);
+}
+
+/* Light mode dual toggle */
+body.light-mode .lang-toggle-dual {
+    background: rgba(0, 114, 255, 0.06);
+    border-color: rgba(0, 114, 255, 0.15);
+}
+
+body.light-mode .lang-flag.active {
+    background: rgba(91, 143, 217, 0.2);
+}
+
+/* Dual Theme Toggle (Sun/Moon) */
+.theme-toggle-dual {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 12px;
+    padding: 0.35rem 0.5rem;
+    cursor: pointer;
+}
+
+.theme-icon {
+    font-size: 1.2rem;
+    padding: 0.2rem 0.35rem;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    opacity: 0.4;
+    filter: grayscale(60%);
+    cursor: pointer;
+}
+
+.theme-icon:hover {
+    opacity: 0.7;
+    filter: grayscale(30%);
+}
+
+.theme-icon.active {
+    opacity: 1;
+    filter: grayscale(0%);
+    background: rgba(91, 143, 217, 0.25);
+    box-shadow: 0 0 10px rgba(91, 143, 217, 0.3);
+    transform: scale(1.1);
+}
+
+/* Light mode theme toggle */
+body.light-mode .theme-toggle-dual {
+    background: rgba(0, 114, 255, 0.06);
+    border-color: rgba(0, 114, 255, 0.15);
+}
+
+body.light-mode .theme-icon.active {
+    background: rgba(255, 183, 77, 0.3);
+    box-shadow: 0 0 10px rgba(255, 183, 77, 0.4);
+}
+
 body.light-mode .lang-toggle:hover {
     background: rgba(0, 114, 255, 0.15);
 }
@@ -308,8 +426,19 @@ body.light-mode .orbit-node {
 }
 
 body.light-mode .orbit-node:hover {
+    background: linear-gradient(135deg, #f0f7ff 0%, #e0efff 100%);
     border-color: rgba(0, 114, 255, 0.5);
     box-shadow: 0 8px 30px rgba(0, 114, 255, 0.25);
+}
+
+body.light-mode .orbit-node.clickable {
+    background: linear-gradient(135deg, #ffffff 0%, #f5faff 100%);
+}
+
+body.light-mode .orbit-node.clickable:hover {
+    background: linear-gradient(135deg, #e8f4ff 0%, #d0e8ff 100%);
+    border-color: rgba(91, 143, 217, 0.6);
+    box-shadow: 0 8px 35px rgba(91, 143, 217, 0.3);
 }
 
 body.light-mode .core-label {
@@ -802,34 +931,55 @@ body.light-mode .toggle-btn:hover {
 /* ===== Character Grid Section ===== */
 .character-grid-section {
     width: 100%;
-    max-width: 1100px;
+    max-width: 100%;
     margin: 0 auto;
+    padding: 0;
 }
 
+/* Horizontal scrolling carousel on all screen sizes */
 .character-cards-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
     gap: 1.5rem;
+    padding: 1.5rem 2rem;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
 }
 
-/* Guide Card */
+.character-cards-grid::-webkit-scrollbar {
+    display: none;
+}
+
+/* Guide Card - consistent design across all sizes */
 .guide-card {
-    background: rgba(35, 40, 55, 0.9);
-    border-radius: 16px;
+    flex: 0 0 auto;
+    width: 280px;
+    max-width: 320px;
+    min-width: 240px;
+    scroll-snap-align: center;
+    background: linear-gradient(165deg,
+            rgba(255, 255, 255, 0.08) 0%,
+            rgba(255, 255, 255, 0.02) 50%,
+            rgba(91, 143, 217, 0.05) 100%);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 24px;
     overflow: hidden;
-    border: 1px solid var(--glass-border);
     cursor: pointer;
     transition: transform 0.3s, box-shadow 0.3s;
 }
 
 .guide-card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4), 0 0 30px var(--glow-purple);
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3), 0 0 30px rgba(91, 143, 217, 0.2);
 }
 
 .guide-image {
     width: 100%;
-    height: 380px;
+    height: 320px;
+    max-height: 380px;
     overflow: hidden;
     position: relative;
 }
@@ -2487,10 +2637,11 @@ body.light-mode .toggle-btn:hover {
 .footer-brand span {
     font-size: 1.5rem;
     font-weight: 600;
+    color: #ffffff;
 }
 
 .footer-brand p {
-    color: var(--text-muted);
+    color: rgba(255, 255, 255, 0.8);
     max-width: 250px;
 }
 
@@ -2508,25 +2659,26 @@ body.light-mode .toggle-btn:hover {
 .footer-col h5 {
     font-weight: 500;
     margin-bottom: 0.5rem;
+    color: #ffffff;
 }
 
 .footer-col a {
-    color: var(--text-muted);
+    color: #ffffff;
     text-decoration: none;
-    transition: color 0.3s;
+    transition: opacity 0.3s;
 }
 
 .footer-col a:hover {
-    color: var(--text-primary);
+    opacity: 0.8;
 }
 
 .footer-bottom {
     max-width: 1200px;
     margin: 3rem auto 0;
     padding-top: 2rem;
-    border-top: 1px solid var(--glass-border);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
     text-align: center;
-    color: var(--text-muted);
+    color: rgba(255, 255, 255, 0.7);
     font-size: 0.875rem;
 }
 
@@ -3786,50 +3938,58 @@ body.light-mode .modal-techniques li {
         white-space: normal;
     }
 
-    /* Split Layout Container - Side-by-Side on mobile */
+    /* ===== REDESIGNED MOBILE HERO LAYOUT ===== */
+
+    /* Stack everything vertically */
     .mobile-split-layout {
         display: flex;
-        flex-direction: row;
-        /* Side by side */
+        flex-direction: column;
         align-items: center;
-        gap: 0.5rem;
+        gap: 1.5rem;
         width: 100%;
-        padding-top: 1rem;
+        padding: 1rem 0;
     }
 
-    /* Left Column: Vertical List of Goals */
+    /* Categories: Horizontal scrollable pills */
     .goal-categories {
-        flex: 0 0 35%;
-        /* Narrower left column */
-        width: 35%;
-        max-width: 35%;
+        width: 100%;
+        max-width: 100%;
         padding: 0;
         margin: 0;
-        padding-right: 0.25rem;
+        order: 1;
+        /* Categories first */
     }
 
     .goal-tabs {
         display: flex;
-        flex-direction: column;
-        gap: 0.4rem;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        gap: 0.5rem;
         width: 100%;
-        max-height: none;
-        overflow: visible;
+        overflow-x: auto;
+        overflow-y: hidden;
         background: transparent;
-        padding: 0;
+        padding: 0.5rem 1rem;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+    }
+
+    .goal-tabs::-webkit-scrollbar {
+        display: none;
     }
 
     .goal-tab {
-        width: 100%;
-        text-align: left;
-        padding: 0.5rem 0.75rem;
-        font-size: 0.75rem;
+        flex: 0 0 auto;
+        width: auto;
+        text-align: center;
+        padding: 0.6rem 1rem;
+        font-size: 0.8rem;
         background: transparent;
-        border: 1px solid rgba(60, 60, 80, 0.4);
+        border: 1px solid rgba(60, 60, 80, 0.3);
         color: var(--text-secondary);
-        border-radius: 20px;
-        white-space: normal;
-        line-height: 1.2;
+        border-radius: 25px;
+        white-space: nowrap;
+        line-height: 1.3;
     }
 
     /* Reset grid logic */
@@ -3850,11 +4010,30 @@ body.light-mode .modal-techniques li {
         border-color: transparent;
     }
 
-    /* Right Column: Character Carousel */
+    /* ===== REIMAGINED MOBILE CHARACTER SECTION ===== */
+
+    /* Character section container - immersive experience */
     .character-grid-section {
-        flex: 1;
-        min-width: 0;
-        padding-top: 0;
+        width: 100%;
+        max-width: 100%;
+        padding: 0;
+        order: 2;
+        position: relative;
+    }
+
+    /* Decorative glow behind active card */
+    .character-grid-section::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 80%;
+        height: 70%;
+        background: radial-gradient(ellipse, rgba(91, 143, 217, 0.15) 0%, transparent 70%);
+        filter: blur(40px);
+        pointer-events: none;
+        z-index: 0;
     }
 
     .character-cards-grid {
@@ -3862,67 +4041,143 @@ body.light-mode .modal-techniques li {
         overflow-x: auto;
         scroll-snap-type: x mandatory;
         gap: 1rem;
-        padding-bottom: 1rem;
+        padding: 1.5rem 1rem 1rem 0.5rem;
         -webkit-overflow-scrolling: touch;
         scrollbar-width: none;
+        position: relative;
+        z-index: 1;
     }
 
     .character-cards-grid::-webkit-scrollbar {
         display: none;
     }
 
+    /* Premium floating card design - show peek of next card */
     .guide-card {
-        flex: 0 0 100%;
-        width: 100%;
+        flex: 0 0 72%;
+        width: 72%;
         scroll-snap-align: center;
-        margin: 0;
-        background: transparent;
-        border: none;
+        margin: 0 2%;
+        background: linear-gradient(165deg,
+                rgba(255, 255, 255, 0.08) 0%,
+                rgba(255, 255, 255, 0.02) 50%,
+                rgba(91, 143, 217, 0.05) 100%);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        border-radius: 24px;
+        padding: 0;
+        overflow: hidden;
+        box-shadow:
+            0 20px 40px -10px rgba(0, 0, 0, 0.35),
+            0 0 0 1px rgba(255, 255, 255, 0.05) inset,
+            0 -15px 30px -15px rgba(91, 143, 217, 0.1) inset;
+        transform: scale(0.95);
+        transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+            box-shadow 0.4s ease;
+    }
+
+    /* Active card gets slight emphasis */
+    .guide-card:first-child {
+        transform: scale(1);
     }
 
     .guide-card:hover {
-        transform: none;
-        box-shadow: none;
+        transform: scale(1);
+        box-shadow:
+            0 30px 60px -15px rgba(0, 0, 0, 0.5),
+            0 0 0 1px rgba(255, 255, 255, 0.08) inset,
+            0 -20px 40px -20px rgba(91, 143, 217, 0.15) inset;
     }
 
+    /* Dramatic image container */
     .guide-image {
         width: 100%;
         height: auto !important;
-        aspect-ratio: 3 / 3.5;
-        border-radius: 16px;
+        aspect-ratio: 4 / 5;
+        border-radius: 0;
         overflow: hidden;
-        margin-bottom: 0.75rem;
-        border: 1px solid var(--glass-border);
+        margin-bottom: 0;
+        border: none;
+        position: relative;
+    }
+
+    /* Gradient overlay for depth */
+    .guide-image::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 50%;
+        background: linear-gradient(to top,
+                rgba(10, 10, 18, 0.95) 0%,
+                rgba(10, 10, 18, 0.6) 40%,
+                transparent 100%);
+        pointer-events: none;
     }
 
     .guide-image img {
         height: 100% !important;
+        width: 100%;
         object-fit: cover;
         object-position: top center;
+        transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     }
 
+    .guide-card:hover .guide-image img {
+        transform: scale(1.03);
+    }
+
+    /* Elegant info section overlaid on image */
     .guide-info {
         display: block !important;
-        padding: 0.75rem 0.25rem;
-        background: transparent;
-        text-align: left;
+        position: relative;
+        padding: 1.25rem 1.5rem 1.5rem;
+        background: linear-gradient(180deg,
+                rgba(15, 15, 25, 0.95) 0%,
+                rgba(20, 20, 35, 0.98) 100%);
+        text-align: center;
+        border-top: 1px solid rgba(91, 143, 217, 0.2);
+    }
+
+    /* Decorative accent line */
+    .guide-info::before {
+        content: '';
+        position: absolute;
+        top: -1px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 60px;
+        height: 3px;
+        background: linear-gradient(90deg,
+                transparent 0%,
+                #5B8FD9 50%,
+                transparent 100%);
+        border-radius: 2px;
     }
 
     .guide-name {
         display: block !important;
-        font-size: 1.1rem;
-        margin-bottom: 0.5rem;
+        font-size: 1.35rem;
+        margin-bottom: 0.6rem;
         font-weight: 600;
-        color: var(--text-primary);
+        color: #ffffff;
+        letter-spacing: 0.02em;
+        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
     }
 
     .guide-desc {
         display: block !important;
-        font-size: 0.85rem;
-        color: var(--text-secondary);
-        line-height: 1.5;
+        font-size: 0.9rem;
+        color: rgba(255, 255, 255, 0.7);
+        line-height: 1.55;
         -webkit-line-clamp: unset;
         overflow: visible;
+        text-align: center;
+        padding: 0;
+        max-width: 280px;
+        margin: 0 auto;
     }
 
     /* Carousel Navigation Arrows - HIDDEN */
@@ -3930,29 +4185,104 @@ body.light-mode .modal-techniques li {
         display: none;
     }
 
-    /* Carousel Dots */
+    /* Reimagined Carousel Indicator - Elegant pill style */
     .carousel-dots {
         display: flex;
         justify-content: center;
         align-items: center;
-        gap: 0.75rem;
-        margin-top: 1.5rem;
-        padding: 0.5rem 0;
+        gap: 0.5rem;
+        margin-top: 1.25rem;
+        padding: 0.75rem 1.25rem;
+        background: rgba(255, 255, 255, 0.03);
+        border-radius: 30px;
+        width: fit-content;
+        margin-left: auto;
+        margin-right: auto;
+        border: 1px solid rgba(255, 255, 255, 0.06);
     }
 
     .carousel-dots .dot {
         width: 8px;
         height: 8px;
         border-radius: 50%;
-        background: rgba(100, 100, 120, 0.3);
+        background: rgba(255, 255, 255, 0.2);
         cursor: pointer;
-        transition: all 0.3s;
+        transition: all 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        position: relative;
+    }
+
+    .carousel-dots .dot::before {
+        content: '';
+        position: absolute;
+        inset: -4px;
+        border-radius: 50%;
+        background: transparent;
+        transition: all 0.35s ease;
     }
 
     .carousel-dots .dot.active {
-        width: 12px;
-        height: 12px;
-        background: #5B8FD9;
+        width: 28px;
+        height: 8px;
+        border-radius: 10px;
+        background: linear-gradient(90deg, #5B8FD9 0%, #7AA8E8 100%);
+        box-shadow: 0 0 12px rgba(91, 143, 217, 0.5);
+    }
+
+    .carousel-dots .dot:not(.active):hover {
+        background: rgba(255, 255, 255, 0.35);
+        transform: scale(1.2);
+    }
+
+    /* Light mode adjustments for mobile character section */
+    body.light-mode .guide-card {
+        background: linear-gradient(165deg,
+                rgba(255, 255, 255, 0.95) 0%,
+                rgba(248, 250, 255, 0.9) 50%,
+                rgba(235, 245, 255, 0.95) 100%);
+        border: 1px solid rgba(91, 143, 217, 0.15);
+        box-shadow:
+            0 25px 50px -12px rgba(0, 0, 0, 0.15),
+            0 0 0 1px rgba(255, 255, 255, 0.8) inset;
+    }
+
+    body.light-mode .guide-image::after {
+        background: linear-gradient(to top,
+                rgba(255, 255, 255, 0.98) 0%,
+                rgba(255, 255, 255, 0.7) 30%,
+                transparent 100%);
+    }
+
+    body.light-mode .guide-info {
+        background: linear-gradient(180deg,
+                rgba(255, 255, 255, 0.95) 0%,
+                rgba(250, 252, 255, 0.98) 100%);
+        border-top: 1px solid rgba(91, 143, 217, 0.15);
+    }
+
+    body.light-mode .guide-name {
+        color: #1a1a2e;
+        text-shadow: none;
+    }
+
+    body.light-mode .guide-desc {
+        color: rgba(30, 30, 50, 0.75);
+    }
+
+    body.light-mode .carousel-dots {
+        background: rgba(0, 0, 0, 0.03);
+        border-color: rgba(0, 0, 0, 0.06);
+    }
+
+    body.light-mode .carousel-dots .dot {
+        background: rgba(0, 0, 0, 0.15);
+    }
+
+    body.light-mode .carousel-dots .dot:not(.active):hover {
+        background: rgba(0, 0, 0, 0.3);
+    }
+
+    body.light-mode .character-grid-section::before {
+        background: radial-gradient(ellipse, rgba(91, 143, 217, 0.1) 0%, transparent 70%);
     }
 
     /* Therapy Grid (Force 3 columns on mobile) */
