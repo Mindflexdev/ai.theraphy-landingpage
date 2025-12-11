@@ -881,10 +881,11 @@ function getFallbackCharacters() {
 
 // ===== Floating Elements =====
 function initFloatingElements() {
-    // createFloatingBalls(); // DISABLED - removed per user request
-    createOrbs();
-    createParticles();
-    createFeathers();
+    // All floating elements DISABLED per user request
+    // createFloatingBalls();
+    // createOrbs();
+    // createParticles();
+    // createFeathers();
 }
 
 function createFloatingBalls() {

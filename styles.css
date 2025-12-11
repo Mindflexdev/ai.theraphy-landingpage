@@ -3902,63 +3902,57 @@ body.light-mode .modal-techniques li {
     }
 
     .guide-info {
-        padding: 0.5rem 0.25rem;
+        display: block !important;
+        padding: 0.75rem 0.25rem;
         background: transparent;
         text-align: left;
     }
 
     .guide-name {
+        display: block !important;
         font-size: 1.1rem;
         margin-bottom: 0.5rem;
         font-weight: 600;
+        color: var(--text-primary);
     }
 
     .guide-desc {
+        display: block !important;
         font-size: 0.85rem;
         color: var(--text-secondary);
         line-height: 1.5;
-        display: block;
         -webkit-line-clamp: unset;
         overflow: visible;
     }
 
-    /* Carousel Navigation Arrows */
+    /* Carousel Navigation Arrows - HIDDEN */
     .carousel-nav {
-        display: flex;
-        justify-content: center;
-        gap: 1.5rem;
-        margin-top: 1rem;
-    }
-
-    .carousel-arrow {
-        width: 36px;
-        height: 36px;
-        border-radius: 50%;
-        background: rgba(91, 143, 217, 0.2);
-        border: 1px solid rgba(91, 143, 217, 0.3);
-        color: var(--text-primary);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        transition: all 0.3s;
-    }
-
-    .carousel-arrow:hover {
-        background: rgba(91, 143, 217, 0.4);
+        display: none;
     }
 
     /* Carousel Dots */
     .carousel-dots {
         display: flex;
         justify-content: center;
-        gap: 0.5rem;
-        margin-top: 1rem;
+        align-items: center;
+        gap: 0.75rem;
+        margin-top: 1.5rem;
+        padding: 0.5rem 0;
     }
 
     .carousel-dots .dot {
-        width: 6px;
-        height: 6px;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: rgba(100, 100, 120, 0.3);
+        cursor: pointer;
+        transition: all 0.3s;
+    }
+
+    .carousel-dots .dot.active {
+        width: 12px;
+        height: 12px;
+        background: #5B8FD9;
     }
 
     /* Therapy Grid (Force 3 columns on mobile) */
