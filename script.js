@@ -1512,56 +1512,7 @@ function initCreationControls() {
         }
     }, 100);
 
-    const createBtn = document.querySelector('.forge-cta');
-    if (createBtn) {
-        createBtn.addEventListener('click', (e) => {
-            const nameInput = document.getElementById('guideName');
-            const descInput = document.getElementById('guideDescription');
-            const selectedStyle = document.querySelector('.approach-btn.active');
 
-            let missing = [];
-            if (!nameInput || !nameInput.value.trim()) missing.push('Name');
-            if (!descInput || !descInput.value.trim()) missing.push('Description');
-            if (!selectedStyle) missing.push('Therapy Style');
-
-            if (missing.length > 0) {
-                e.preventDefault();
-                // Show message in error container
-                const errDiv = document.getElementById('forgeError');
-                const currentLang = localStorage.getItem('lang') || 'en';
-                const msg = currentLang === 'de'
-                    ? `Bitte fülle noch folgende Felder aus: ${missing.join(', ')}`
-                    : `Please fill out the following fields: ${missing.join(', ')}`;
-
-                if (errDiv) {
-                    errDiv.style.display = 'block';
-                    errDiv.style.visibility = 'visible'; // Ensure visibility
-                    errDiv.style.opacity = '1';
-                    errDiv.textContent = msg;
-
-                    // Scroll to error to ensure user sees it
-                    errDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
-
-                    // Shake animation for visibility
-                    errDiv.style.animation = 'none';
-                    errDiv.offsetHeight; /* trigger reflow */
-                    errDiv.style.animation = 'shake 0.5s ease-in-out';
-                } else {
-                    // Fallback if element missing (should not happen)
-                    alert(msg);
-                }
-            } else {
-                // Clear error if any
-                const errDiv = document.getElementById('forgeError');
-                if (errDiv) {
-                    errDiv.textContent = '';
-                    errDiv.style.display = 'none';
-                }
-                // Allow default link behavior (navigate to https://ai.therapy.free)
-                // No backend creation needed here
-            }
-        });
-    }
 }
 
 function updatePreviewAvatar(archetype) {
