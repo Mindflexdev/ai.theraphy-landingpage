@@ -2279,134 +2279,7 @@ body.light-mode .section-disclaimer {
     align-items: start;
 }
 
-.forge-preview {
-    position: sticky;
-    top: 120px;
-}
 
-.preview-stage {
-    position: relative;
-    width: 300px;
-    height: 350px;
-    margin: 0 auto;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.preview-glow {
-    position: absolute;
-    width: 250px;
-    height: 250px;
-    background: radial-gradient(circle, var(--glow-purple) 0%, transparent 70%);
-    filter: blur(40px);
-    animation: forgeGlow 4s ease-in-out infinite;
-}
-
-@keyframes forgeGlow {
-
-    0%,
-    100% {
-        transform: scale(1);
-        opacity: 0.6;
-    }
-
-    50% {
-        transform: scale(1.2);
-        opacity: 0.9;
-    }
-}
-
-.preview-avatar {
-    position: relative;
-    z-index: 10;
-}
-
-.forge-photo-preview {
-    position: relative;
-    width: 220px;
-    height: 280px;
-    border-radius: 20px;
-    overflow: hidden;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4), 0 0 40px var(--glow-purple);
-    border: 2px solid var(--glass-border);
-}
-
-.forge-photo {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    opacity: 0;
-    transform: scale(1.1);
-    transition: opacity 0.5s, transform 0.5s;
-}
-
-.forge-photo.active {
-    opacity: 1;
-    transform: scale(1);
-}
-
-.forge-photo-overlay {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(180deg, transparent 50%, rgba(147, 112, 219, 0.4) 100%);
-    pointer-events: none;
-}
-
-.stage-ring {
-    position: absolute;
-    bottom: 20px;
-    width: 200px;
-    height: 40px;
-    border: 2px solid var(--accent-purple);
-    border-radius: 50%;
-    opacity: 0.3;
-    animation: ringPulse 3s infinite;
-}
-
-@keyframes ringPulse {
-
-    0%,
-    100% {
-        transform: scale(1);
-        opacity: 0.3;
-    }
-
-    50% {
-        transform: scale(1.1);
-        opacity: 0.6;
-    }
-}
-
-.preview-name {
-    text-align: center;
-    margin-top: 2rem;
-}
-
-.name-input {
-    background: var(--glass-bg);
-    border: 1px solid var(--glass-border);
-    border-radius: 12px;
-    padding: 1rem 1.5rem;
-    color: var(--text-primary);
-    font-family: var(--font-body);
-    font-size: 1.125rem;
-    text-align: center;
-    width: 100%;
-    max-width: 250px;
-    outline: none;
-    transition: border-color 0.3s, box-shadow 0.3s;
-}
-
-.name-input:focus {
-    border-color: var(--accent-purple);
-    box-shadow: 0 0 20px var(--glow-purple);
-}
-
-.name-input::placeholder {
-    color: var(--text-muted);
-}
 
 .forge-controls {
     display: flex;
@@ -4477,10 +4350,21 @@ body.light-mode .modal-techniques li {
 .carousel-dots {
     display: none;
 }
+
 @keyframes shake {
-  0%, 100% { transform: translateX(0); }
-  25% { transform: translateX(-5px); }
-  75% { transform: translateX(5px); }
+
+    0%,
+    100% {
+        transform: translateX(0);
+    }
+
+    25% {
+        transform: translateX(-5px);
+    }
+
+    75% {
+        transform: translateX(5px);
+    }
 }
 
 .forge-cta {
