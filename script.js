@@ -730,18 +730,26 @@ async function initGoalTabs() {
             return;
         }
 
-        grid.innerHTML = characters.map(char => {
+        // Clone for infinite scroll
+        const CLONE_COUNT = 2;
+        const clonesStart = characters.slice(-CLONE_COUNT);
+        const clonesEnd = characters.slice(0, CLONE_COUNT);
+        const loopList = [...clonesStart, ...characters, ...clonesEnd];
+
+        grid.innerHTML = loopList.map((char, index) => {
+            // Determine if this is a clone
+            const isClone = index < CLONE_COUNT || index >= characters.length + CLONE_COUNT;
+
             // Handle image logic
             let imgSrc = char.img || '';
             if (imgSrc && !imgSrc.includes('/') && !imgSrc.startsWith('http')) {
                 imgSrc = `https://images.unsplash.com/${char.img}?w=300&h=350&fit=crop&crop=face`;
             }
 
-            // Fallback image for onerror
             const fallbackImg = "https://images.unsplash.com/photo-1620121692029-d088224ddc74?w=300&h=350&fit=crop";
 
             return `
-            <div class="guide-card">
+            <div class="guide-card${isClone ? ' is-clone' : ''}" data-real-index="${(index - CLONE_COUNT + characters.length) % characters.length}">
                 <div class="guide-image">
                     <div class="image-placeholder"></div>
                     <img src="${imgSrc}" 
@@ -767,10 +775,50 @@ async function initGoalTabs() {
         // Update carousel dots
         updateCarouselDots(characters.length);
 
-        // Reset carousel position
+        // Reset carousel position to first REAL character
         currentCharIndex = 0;
-        scrollToCharacter(0);
+
+        // Wait for layout
+        setTimeout(() => {
+            scrollToCharacter(0, false);
+        }, 100);
+
+        // Infinite Scroll Handler
+        let scrollTimeout;
+        grid.addEventListener('scroll', () => {
+            if (scrollTimeout) clearTimeout(scrollTimeout);
+            scrollTimeout = setTimeout(() => {
+                checkInfiniteLoop(characters.length, CLONE_COUNT);
+            }, 50);
+        });
     }
+
+    // Simpler Infinite Loop: just check edges
+    function checkInfiniteLoop(totalReal, cloneCount) {
+        const scrollLeft = grid.scrollLeft;
+        const scrollWidth = grid.scrollWidth;
+        const clientWidth = grid.clientWidth;
+
+        // If near start
+        if (scrollLeft < 10) {
+            // Jump to the corresponding position at the end
+            // Visual Index 0 (Clone Start 0) -> Real Index: Last-1 (TotalReal-2)
+            // Corresponding Visual Index = CLONE_COUNT + (TotalReal-2).
+            const targetIndex = cloneCount + totalReal - 2;
+            const targetCard = grid.children[targetIndex];
+            if (targetCard) targetCard.scrollIntoView({ behavior: 'auto', inline: 'center' });
+        }
+        else if (scrollLeft > scrollWidth - clientWidth - 10) {
+            // Jump to Corresponding Start
+            // Visual Index Last = Clone End 1 = Real First + 1
+            // We want to jump to Real First + 1.
+            // corresponding Visual Index = CLONE_COUNT + 1.
+            const targetIndex = cloneCount + 1;
+            const targetCard = grid.children[targetIndex];
+            if (targetCard) targetCard.scrollIntoView({ behavior: 'auto', inline: 'center' });
+        }
+    }
+
 
     // Carousel navigation
     let currentCharIndex = 0;
@@ -791,14 +839,32 @@ async function initGoalTabs() {
         }
     }
 
-    function scrollToCharacter(index) {
+    function scrollToCharacter(index, smooth = true) {
         const cards = grid.querySelectorAll('.guide-card');
         if (cards.length === 0) return;
 
-        currentCharIndex = Math.max(0, Math.min(index, cards.length - 1));
+        // Logical index to visual index
+        const CLONE_COUNT = 2; // Must match above
+        // Clamp index
+        const realCount = cards.length - (CLONE_COUNT * 2);
+        // Note: cards.length is modified now
+
+        // Handle wrapping for next/prev buttons
+        let validIndex = index;
+        if (index < 0) validIndex = realCount - 1;
+        if (index >= realCount) validIndex = 0;
+
+        currentCharIndex = validIndex;
+
+        // Visual Index: index + CLONE_COUNT (skip start clones)
+        const targetVisualIndex = validIndex + CLONE_COUNT;
 
         // Scroll to card
-        cards[currentCharIndex].scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+        cards[targetVisualIndex].scrollIntoView({
+            behavior: smooth ? 'smooth' : 'auto',
+            inline: 'center',
+            block: 'nearest'
+        });
 
         // Update dots
         const dots = document.querySelectorAll('#carouselDots .dot');
@@ -811,17 +877,21 @@ async function initGoalTabs() {
     const prevBtn = document.getElementById('prevChar');
     const nextBtn = document.getElementById('nextChar');
 
+    // We need real count for modulo
+    // We can infer it or store it.
+    // DisplayCharacters length is 24.
+
     if (prevBtn) {
         prevBtn.addEventListener('click', () => {
-            const cards = grid.querySelectorAll('.guide-card');
-            scrollToCharacter((currentCharIndex - 1 + cards.length) % cards.length);
+            const realCount = 24; // Fixed
+            scrollToCharacter(currentCharIndex - 1);
         });
     }
 
     if (nextBtn) {
         nextBtn.addEventListener('click', () => {
-            const cards = grid.querySelectorAll('.guide-card');
-            scrollToCharacter((currentCharIndex + 1) % cards.length);
+            const realCount = 24;
+            scrollToCharacter(currentCharIndex + 1);
         });
     }
 
