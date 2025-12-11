@@ -4477,3 +4477,19 @@ body.light-mode .modal-techniques li {
 .carousel-dots {
     display: none;
 }
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
+}
+
+.forge-cta {
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+}
+
+.forge-cta:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(91, 143, 217, 0.4);
+}

@@ -1504,6 +1504,14 @@ function initCreationControls() {
         });
     });
 
+    // Preselect CBT by default
+    setTimeout(() => {
+        const cbtBtn = document.querySelector('.approach-btn[data-type="cbt"]');
+        if (cbtBtn) {
+            cbtBtn.click();
+        }
+    }, 100);
+
     const createBtn = document.querySelector('.forge-cta');
     if (createBtn) {
         createBtn.addEventListener('click', (e) => {
@@ -1518,13 +1526,28 @@ function initCreationControls() {
 
             if (missing.length > 0) {
                 e.preventDefault();
-                // Simple textual reminder as requested
+                // Show message in error container
+                const errDiv = document.getElementById('forgeError');
                 const currentLang = localStorage.getItem('lang') || 'en';
                 const msg = currentLang === 'de'
                     ? `Bitte fülle noch folgende Felder aus: ${missing.join(', ')}`
                     : `Please fill out the following fields: ${missing.join(', ')}`;
-                alert(msg);
+
+                if (errDiv) {
+                    errDiv.style.display = 'block';
+                    errDiv.textContent = msg;
+                    // Shake animation for visibility
+                    errDiv.style.animation = 'none';
+                    errDiv.offsetHeight; /* trigger reflow */
+                    errDiv.style.animation = 'shake 0.5s ease-in-out';
+                }
             } else {
+                // Clear error if any
+                const errDiv = document.getElementById('forgeError');
+                if (errDiv) {
+                    errDiv.textContent = '';
+                    errDiv.style.display = 'none';
+                }
                 // Allow default link behavior (navigate to https://ai.therapy.free)
                 // No backend creation needed here
             }
