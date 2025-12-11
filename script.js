@@ -721,6 +721,22 @@ async function initGoalTabs() {
         }
     }
 
+    // Prioritize specific characters (Luna Starlight, Coach Thunder)
+    const priorityNames = ['luna starlight', 'coach thunder'];
+
+    mixedCharacters.sort((a, b) => {
+        const nameA = a.name.toLowerCase();
+        const nameB = b.name.toLowerCase();
+
+        const indexA = priorityNames.findIndex(p => nameA.includes(p));
+        const indexB = priorityNames.findIndex(p => nameB.includes(p));
+
+        if (indexA !== -1 && indexB !== -1) return indexA - indexB;
+        if (indexA !== -1) return -1;
+        if (indexB !== -1) return 1;
+        return 0;
+    });
+
     // Limit to reasonable number (e.g., 24 characters for diverse selection)
     const displayCharacters = mixedCharacters.slice(0, 24);
 
