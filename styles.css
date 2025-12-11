@@ -2698,14 +2698,17 @@ body.light-mode .section-disclaimer {
     max-width: 1200px;
     margin: 0 auto;
     display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 3rem;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+    text-align: center;
 }
 
 .footer-brand {
     display: flex;
     flex-direction: column;
+    align-items: center;
     gap: 0.75rem;
 }
 
@@ -4037,9 +4040,19 @@ body.light-mode .modal-techniques li {
         display: flex;
         flex-direction: column;
         align-items: center;
-        gap: 1.5rem;
+        gap: 0.5rem;
         width: 100%;
         padding: 1rem 0;
+    }
+
+    .more-characters-msg {
+        width: 100%;
+        text-align: center;
+        color: rgba(255, 255, 255, 0.6);
+        font-size: 0.9rem;
+        margin-bottom: 0.25rem;
+        font-weight: 500;
+        animation: fadeIn 1s ease-out;
     }
 
     /* Categories: Horizontal scrollable pills */
