@@ -3667,12 +3667,13 @@ body.light-mode .modal-techniques li {
     transition: all 0.5s;
 }
 
-/* Dynamic Core State */
+/* Dynamic Core State - disabled
 .core-brain.active {
     stroke: var(--accent-purple);
     filter: drop-shadow(0 0 10px var(--glow-purple));
     opacity: 1;
 }
+*/
 
 .core-inner-ring {
     position: absolute;
